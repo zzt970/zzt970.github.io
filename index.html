@@ -1242,7 +1242,7 @@ const resume = {
         { label: "高等数学", state: "doing" },
         { label: "大学英语", state: "doing" },
         { label: "大学物理", state: "doing" },
-        { label: "51 单片机", state: "self", tip: "准备自学" },
+        { label: "51 单片机", state: "self" },
         { label: "AI 智能体的进阶运用", state: "self" },
         { label: "电路分析基础", state: "todo" },
         { label: "数字电子技术", state: "todo" },
@@ -1859,6 +1859,10 @@ const resume = {
     let cur = null;
     const probe = st + window.innerHeight * 0.28;
     secs.forEach(s => { if (s.offsetTop <= probe) cur = s; });
+    /* 页面底部（footer）时，最后一块的顶部可能始终够不到探测线，强制高亮最后一项 */
+    if (secs.length && st + window.innerHeight >= document.documentElement.scrollHeight - 40) {
+      cur = secs[secs.length - 1];
+    }
     links.forEach(a => a.classList.toggle("active", !!cur && a.dataset.target === cur.id));
 
     /* 手机端导航可横向滚动：只在「高亮项发生变化」时把它平滑带到可视区中间，
@@ -2016,7 +2020,7 @@ const resume = {
       }
 
       /* 作品：直接读页面静态卡片，保证打印版与网页版永远同步（简介同理读 profile.summary） */
-      const workCards = document.querySelectorAll("#projects .work-card");
+      const workCards = document.querySelectorAll("#works .work-card");
       if (workCards.length) {
         H.push("<h2>作品</h2>");
         workCards.forEach(card => {
